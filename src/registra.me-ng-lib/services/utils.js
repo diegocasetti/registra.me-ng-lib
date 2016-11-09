@@ -1,7 +1,7 @@
 (function(angular) {
     angular.
     module('registra.meNgLib.services').
-    factory('utils', [function() {
+    factory('rgmeUtils', [function() {
         var checkParams = function(requiredParameters, params) {
             for (var i = 0; i < requiredParameters.lenght; i++) {
                 var founded = false;

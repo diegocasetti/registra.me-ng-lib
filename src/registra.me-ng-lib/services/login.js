@@ -1,7 +1,7 @@
 (function(angular) {
     angular.
     module('registra.meNgLib.services').
-    factory('login', ['request', 'utils', '$cookies', function(request, utils, $cookies) {
+    factory('rgmeLogin', ['rgmeRequest', 'rgmeUtils', '$cookies', function(rgmeRequest, rgmeUtils, $cookies) {
         this.url = 'api.registra.me/api-v1/client/user/login';
         this.requiredParameters = ['secret', 'email', 'password'];
         this.protocol = 'https://';
@@ -31,8 +31,8 @@
             $cookies.put('registrame-api-token', token);
         };
         var call = function(success, error) {
-            if (utils.checkParams(this.requiredParameters, this.params)) {
-                request.post(this.protocol + this.url, this.params, function(data){
+            if (rgmeUtils.checkParams(this.requiredParameters, this.params)) {
+                rgmeRequest.post(this.protocol + this.url, this.params, function(data){
                     setTokenCookie(data.token);
                     delete data.token;
                     success(data);

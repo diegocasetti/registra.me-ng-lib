@@ -20,15 +20,17 @@
           'registra.meNgLib.directives',
           'registra.meNgLib.filters',
           'registra.meNgLib.services',
+          'ngResource',
           'ngCookies',
+          'ngSanitize'
       ]);
 
 })(angular);
 
 (function(angular) {
     angular.
-    module('registra.meNgLib.services', []).
-    factory('login', ['request', 'utils', '$cookies', function(request, utils, $cookies) {
+    module('registra.meNgLib.services').
+    factory('rgmeLogin', ['rgmeRequest', 'rgmeUtils', '$cookies', function(rgmeRequest, rgmeUtils, $cookies) {
         this.url = 'api.registra.me/api-v1/client/user/login';
         this.requiredParameters = ['secret', 'email', 'password'];
         this.protocol = 'https://';
@@ -58,8 +60,8 @@
             $cookies.put('registrame-api-token', token);
         };
         var call = function(success, error) {
-            if (utils.checkParams(this.requiredParameters, this.params)) {
-                request.post(this.protocol + this.url, this.params, function(data){
+            if (rgmeUtils.checkParams(this.requiredParameters, this.params)) {
+                rgmeRequest.post(this.protocol + this.url, this.params, function(data){
                     setTokenCookie(data.token);
                     delete data.token;
                     success(data);
@@ -82,8 +84,8 @@
 })(angular);
 (function(angular) {
     angular.
-    module('registra.meNgLib.services', []).
-    factory('request', ['$http', '$httpParamSerializerJQLike', function($http, $httpParamSerializerJQLike) {
+    module('registra.meNgLib.services').
+    factory('rgmeRequest', ['$http', '$httpParamSerializerJQLike', function($http, $httpParamSerializerJQLike) {
         var post = function(url, params, success, errorFunction) {
             var config = {
                 headers : {
@@ -115,8 +117,8 @@
 })(angular);
 (function(angular) {
     angular.
-    module('registra.meNgLib.services', []).
-    factory('utils', [function() {
+    module('registra.meNgLib.services').
+    factory('rgmeUtils', [function() {
         var checkParams = function(requiredParameters, params) {
             for (var i = 0; i < requiredParameters.lenght; i++) {
                 var founded = false;
