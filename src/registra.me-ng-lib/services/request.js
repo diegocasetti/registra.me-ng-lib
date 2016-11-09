@@ -34,6 +34,6 @@
             post: post,
             get: get,
             buildUrl: buildUrl
-        }
+        };
     }]);
 })(angular);
