@@ -20,9 +20,7 @@
           'registra.meNgLib.directives',
           'registra.meNgLib.filters',
           'registra.meNgLib.services',
-          'ngResource',
           'ngCookies',
-          'ngSanitize'
       ]);
 
 })(angular);
