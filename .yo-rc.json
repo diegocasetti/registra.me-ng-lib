@@ -16,12 +16,12 @@
           "lib"
         ]
       },
-      "includeModuleDirectives": true,
-      "includeModuleFilters": true,
+      "includeModuleDirectives": false,
+      "includeModuleFilters": false,
       "includeModuleServices": true,
-      "includeAngularModuleResource": true,
+      "includeAngularModuleResource": false,
       "includeAngularModuleCookies": true,
-      "includeAngularModuleSanitize": true,
+      "includeAngularModuleSanitize": false,
       "librarySrcDirectory": "src/registra.me-ng-lib",
       "libraryUnitTestDirectory": "test/unit/registra.me-ng-lib",
       "libraryUnitE2eDirectory": "test/e2e/registra.me-ng-lib"
