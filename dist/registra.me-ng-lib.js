@@ -113,6 +113,12 @@
                 url: encodeURI(url + $httpParamSerializerJQLike(params))
             });
         };
+
+        return {
+            post: post,
+            get: get,
+            buildUrl: buildUrl
+        };
     }]);
 })(angular);
 (function(angular) {
