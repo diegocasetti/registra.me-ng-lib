@@ -1,6 +1,6 @@
 (function(angular) {
     angular.
-    module('registra.meNgLib.services', []).
+    module('registra.meNgLib.services').
     factory('login', ['request', 'utils', '$cookies', function(request, utils, $cookies) {
         this.url = 'api.registra.me/api-v1/client/user/login';
         this.requiredParameters = ['secret', 'email', 'password'];

@@ -1,6 +1,6 @@
 (function(angular) {
     angular.
-    module('registra.meNgLib.services', []).
+    module('registra.meNgLib.services').
     factory('request', ['$http', '$httpParamSerializerJQLike', function($http, $httpParamSerializerJQLike) {
         var post = function(url, params, success, errorFunction) {
             var config = {
