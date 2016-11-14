@@ -16,7 +16,7 @@
             });
         };
         var get = function(url, params, success, errorFunction) {
-            var request = $http.get(encodeURI(url + $httpParamSerializerJQLike(params)))
+            var request = $http.get(encodeURI(url + '?' + $httpParamSerializerJQLike(params)))
             .success(function (data, status, headers, config) {
                 success(data);
             }).error(function (data, status, header, config) {
@@ -26,7 +26,7 @@
         var buildUrl = function(url, params, success) {
             success({
                 status: 'ok',
-                url: encodeURI(url + $httpParamSerializerJQLike(params))
+                url: encodeURI(url + '?' + $httpParamSerializerJQLike(params))
             });
         };
 

@@ -2,37 +2,35 @@
     angular.
     module('registra.meNgLib.services').
     factory('rgmeLogin', ['rgmeRequest', 'rgmeUtils', '$cookies', function(rgmeRequest, rgmeUtils, $cookies) {
-        this.url = 'api.registra.me/api-v1/client/user/login';
-        this.requiredParameters = ['secret', 'email', 'password'];
-        this.protocol = 'https://';
-        this.params = [];
-        var setSecret = function(secret) {
-            this.params.push({
-                name: 'secret',
-                value: secret
-            });
+        var url = 'api.registra.me/api-v1/client/user/login';
+        var requiredParameters = ['secret', 'email', 'password'];
+        var protocol = 'https://';
+        var params = {};
+        var setSecret = function(s) {
+            params.secret = s;
         };
-        var setEmail = function(email) {
-            this.params.push({
-                name: 'email',
-                value: email
-            });
+        var setEmail = function(e) {
+            params.email = e;
         };
-        var setPassword = function(password) {
-            this.params.push({
-                name: 'password',
-                value: password
-            });
+        var setPassword = function(p) {
+            params.password = p;
         };
         var setInsecureProtocol = function() {
-            this.protocol = 'http://';
+            protocol = 'http://';
         };
         var setTokenCookie = function(token){
             $cookies.put('registrame-api-token', token);
         };
+        var isLogged = function(){
+            if($cookies.get('registrame-api-token')){
+                return true;
+            }else{
+                return false;
+            }
+        };
         var call = function(success, error) {
-            if (rgmeUtils.checkParams(this.requiredParameters, this.params)) {
-                rgmeRequest.post(this.protocol + this.url, this.params, function(data){
+            if (rgmeUtils.checkParams(requiredParameters, params)) {
+                rgmeRequest.post(protocol + url, params, function(data){
                     setTokenCookie(data.token);
                     delete data.token;
                     success(data);
@@ -43,12 +41,15 @@
                     message: 'Parametros obligatorios faltantes.'
                 });
             }
+
+            params = {};
         };
         return {
             setSecret: setSecret,
             setEmail: setEmail,
             setPassword: setPassword,
             setInsecureProtocol: setInsecureProtocol,
+            isLogged: isLogged,
             call: call
         };
     }]);

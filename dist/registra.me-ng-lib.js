@@ -30,38 +30,204 @@
 (function(angular) {
     angular.
     module('registra.meNgLib.services').
-    factory('rgmeLogin', ['rgmeRequest', 'rgmeUtils', '$cookies', function(rgmeRequest, rgmeUtils, $cookies) {
-        this.url = 'api.registra.me/api-v1/client/user/login';
-        this.requiredParameters = ['secret', 'email', 'password'];
-        this.protocol = 'https://';
-        this.params = [];
-        var setSecret = function(secret) {
-            this.params.push({
-                name: 'secret',
-                value: secret
-            });
+    factory('rgmeAudioCall', ['rgmeRequest', 'rgmeUtils', '$cookies', function(rgmeRequest, rgmeUtils, $cookies) {
+        var url = 'api.registra.me/api-v1/client/obtener/llamada/audio';
+        var requiredParameters = ['token', 'central_telefonica_id'];
+        var requiredParametersToFileUrl = ['token', 'central_telefonica_id', 'llamada_audio_id'];
+        var urlToFile = 'api.registra.me/api-v1/client/descargar/llamada/audio';
+        var protocol = 'https://';
+        var params = {};
+        var setToken = function(token) {
+            params['token'] = token;
         };
-        var setEmail = function(email) {
-            this.params.push({
-                name: 'email',
-                value: email
-            });
+        var setCentralTelefonicaID = function(centralTelefonicaID) {
+            params['central_telefonica_id'] = centralTelefonicaID;
         };
-        var setPassword = function(password) {
-            this.params.push({
-                name: 'password',
-                value: password
-            });
+        var setFechaInicio = function(fechaInicio) {
+            params['fecha_inicio'] = fechaInicio;
+        };
+        var setFechaFin = function(fechaFin) {
+            params['fecha_fin'] = fechaFin;
+        };
+        var setOrder = function(order) {
+            params['order'] = order;
+        };
+        var setPage = function(page) {
+            params['page'] = page;
+        };
+        var setLlamadaAudioID = function(llamadaAudioID) {
+            params['llamada_audio_id'] = llamadaAudioID;
         };
         var setInsecureProtocol = function() {
-            this.protocol = 'http://';
+            protocol = 'http://';
+        };
+        var call = function(success, error) {
+            params['token'] = $cookies.get('registrame-api-token');
+            console.log($cookies.get('registrame-api-token'));
+            if (rgmeUtils.checkParams(requiredParameters, params)) {
+                rgmeRequest.get(protocol + url, params, success, error);
+            } else {
+                error({
+                    status: 'error',
+                    message: 'Parametros obligatorios faltantes.'
+                });
+            }
+        };
+        var getUrlToFile = function(success, error) {
+            params['token'] = $cookies.get('registrame-api-token');
+            if (rgmeUtils.checkParams(requiredParametersToFileUrl, params)) {
+                rgmeRequest.buildUrl(protocol + urlToFile, params, success);
+            } else {
+                error({
+                    status: 'error',
+                    message: 'Parametros obligatorios faltantes.'
+                });
+            }
+
+            delete params['llamada_audio_id'];
+        };
+        return {
+            call: call,
+            setCentralTelefonicaID: setCentralTelefonicaID,
+            setFechaInicio: setFechaInicio,
+            setFechaFin: setFechaFin,
+            setOrder: setOrder,
+            setPage: setPage,
+            setLlamadaAudioID: setLlamadaAudioID,
+            setInsecureProtocol: setInsecureProtocol,
+            getUrlToFile: getUrlToFile
+        };
+    }]);
+})(angular);
+(function(angular) {
+    angular.
+    module('registra.meNgLib.services').
+    factory('rgmeCall', ['rgmeRequest', 'rgmeUtils', '$cookies', function(rgmeRequest, rgmeUtils, $cookies) {
+        var url = 'api.registra.me/api-v1/client/obtener/llamada';
+        var requiredParameters = ['token', 'central_telefonica_id'];
+        var protocol = 'https://';
+        var params = {};
+        var setCentralTelefonicaID = function(centralTelefonicaID) {
+            params['central_telefonica_id'] = centralTelefonicaID;
+        };
+        var setTelefono = function(telefono) {
+            params['telefono'] = telefono;
+        };
+        var setFechaInicio = function(fechaInicio) {
+            params['fecha_inicio'] = fechaInicio;
+        };
+        var setFechaFin = function(fechaFin) {
+            params['fecha_fin'] = fechaFin;
+        };
+        var setOrder = function(order) {
+            params['order'] = order;
+        };
+        var setPage = function(page) {
+            params['page'] = page;
+        };
+        var setLlamadaID = function(llamadaID) {
+            params['llamada_id'] = llamadaID;
+        };
+        var setInsecureProtocol = function() {
+            protocol = 'http://';
+        };
+        var call = function(success, error) {
+            params['token'] = $cookies.get('registrame-api-token');
+            if (rgmeUtils.checkParams(requiredParameters, params)) {
+                rgmeRequest.get(protocol + url, params, success, error);
+            } else {
+                error({
+                    status: 'error',
+                    message: 'Parametros obligatorios faltantes.'
+                });
+            }
+
+            params = {};
+        };
+        return {
+            call: call,
+            setCentralTelefonicaID: setCentralTelefonicaID,
+            setTelefono: setTelefono,
+            setFechaInicio: setFechaInicio,
+            setFechaFin: setFechaFin,
+            setOrder: setOrder,
+            setPage: setPage,
+            setLlamadaID: setLlamadaID,
+            setInsecureProtocol: setInsecureProtocol
+        };
+    }]);
+})(angular);
+(function(angular) {
+    angular.
+    module('registra.meNgLib.services').
+    factory('rgmeDashboard', ['rgmeRequest', 'rgmeUtils', '$cookies', function(rgmeRequest, rgmeUtils, $cookies) {
+        var baseUrl = 'api.registra.me/api-v1/client/dashboard';
+        var params = {};
+        var protocol = 'https://';
+        var setInsecureProtocol = function() {
+            protocol = 'http://';
+        };
+        var setCentralTelefonicaID = function(centralTelefonicaID) {
+            params['central_telefonica_id'] = centralTelefonicaID;
+        };
+        var call = function(urlMethod, requiredParameters, success, error) {
+            params['token'] = $cookies.get('registrame-api-token');
+            if (rgmeUtils.checkParams(requiredParameters, params)) {
+                rgmeRequest.get(protocol + baseUrl + urlMethod, params, success, error);
+            } else {
+                error({
+                    status: 'error',
+                    message: 'Parametros obligatorios faltantes.'
+                });
+            }
+
+            params = {};
+        };
+        var getBytes = function(success, error){
+            var url = '/peso/audios';
+            var requiredParameters = ['token'];
+            call(url, requiredParameters, success, error);
+        };
+        return {
+            getBytes: getBytes,
+            setCentralTelefonicaID: setCentralTelefonicaID,
+            setInsecureProtocol: setInsecureProtocol
+        };
+    }]);
+})(angular);
+(function(angular) {
+    angular.
+    module('registra.meNgLib.services').
+    factory('rgmeLogin', ['rgmeRequest', 'rgmeUtils', '$cookies', function(rgmeRequest, rgmeUtils, $cookies) {
+        var url = 'api.registra.me/api-v1/client/user/login';
+        var requiredParameters = ['secret', 'email', 'password'];
+        var protocol = 'https://';
+        var params = {};
+        var setSecret = function(s) {
+            params.secret = s;
+        };
+        var setEmail = function(e) {
+            params.email = e;
+        };
+        var setPassword = function(p) {
+            params.password = p;
+        };
+        var setInsecureProtocol = function() {
+            protocol = 'http://';
         };
         var setTokenCookie = function(token){
             $cookies.put('registrame-api-token', token);
         };
+        var isLogged = function(){
+            if($cookies.get('registrame-api-token')){
+                return true;
+            }else{
+                return false;
+            }
+        };
         var call = function(success, error) {
-            if (rgmeUtils.checkParams(this.requiredParameters, this.params)) {
-                rgmeRequest.post(this.protocol + this.url, this.params, function(data){
+            if (rgmeUtils.checkParams(requiredParameters, params)) {
+                rgmeRequest.post(protocol + url, params, function(data){
                     setTokenCookie(data.token);
                     delete data.token;
                     success(data);
@@ -72,12 +238,15 @@
                     message: 'Parametros obligatorios faltantes.'
                 });
             }
+
+            params = {};
         };
         return {
             setSecret: setSecret,
             setEmail: setEmail,
             setPassword: setPassword,
             setInsecureProtocol: setInsecureProtocol,
+            isLogged: isLogged,
             call: call
         };
     }]);
@@ -100,7 +269,7 @@
             });
         };
         var get = function(url, params, success, errorFunction) {
-            var request = $http.get(encodeURI(url + $httpParamSerializerJQLike(params)))
+            var request = $http.get(encodeURI(url + '?' + $httpParamSerializerJQLike(params)))
             .success(function (data, status, headers, config) {
                 success(data);
             }).error(function (data, status, header, config) {
@@ -110,7 +279,7 @@
         var buildUrl = function(url, params, success) {
             success({
                 status: 'ok',
-                url: encodeURI(url + $httpParamSerializerJQLike(params))
+                url: encodeURI(url + '?' + $httpParamSerializerJQLike(params))
             });
         };
 
@@ -124,22 +293,41 @@
 (function(angular) {
     angular.
     module('registra.meNgLib.services').
+    factory('rgmeUser', ['rgmeRequest', 'rgmeUtils', '$cookies', function(rgmeRequest, rgmeUtils, $cookies) {
+        var url = 'api.registra.me/api-v1/client/user';
+        var requiredParameters = ['token'];
+        var protocol = 'https://';
+        var params = {};
+        var call = function(success, error) {
+            params['token'] = $cookies.get('registrame-api-token');
+            if (rgmeUtils.checkParams(requiredParameters, params)) {
+                rgmeRequest.get(protocol + url, params, success, error);
+            } else {
+                error({
+                    status: 'error',
+                    message: 'Parametros obligatorios faltantes.'
+                });
+            }
+
+            params = {};
+        };
+        return {
+            call: call
+        };
+    }]);
+})(angular);
+(function(angular) {
+    angular.
+    module('registra.meNgLib.services').
     factory('rgmeUtils', [function() {
         var checkParams = function(requiredParameters, params) {
-            for (var i = 0; i < requiredParameters.lenght; i++) {
-                var founded = false;
-                for (var k = 0; k < params.lenght; k++) {
-                    if (requiredParameters[i] === k.name){
-                        founded = true;
-                    }
-                }
-                if (!founded){
+            for (var k = 0; k < requiredParameters.length; k++) {
+                if (params[requiredParameters[k]] === undefined) {
                     return false;
                 }
             }
             return true;
         };
-
         return {
             checkParams: checkParams
         };

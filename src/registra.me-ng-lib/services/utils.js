@@ -3,20 +3,13 @@
     module('registra.meNgLib.services').
     factory('rgmeUtils', [function() {
         var checkParams = function(requiredParameters, params) {
-            for (var i = 0; i < requiredParameters.lenght; i++) {
-                var founded = false;
-                for (var k = 0; k < params.lenght; k++) {
-                    if (requiredParameters[i] === k.name){
-                        founded = true;
-                    }
-                }
-                if (!founded){
+            for (var k = 0; k < requiredParameters.length; k++) {
+                if (params[requiredParameters[k]] === undefined) {
                     return false;
                 }
             }
             return true;
         };
-
         return {
             checkParams: checkParams
         };
