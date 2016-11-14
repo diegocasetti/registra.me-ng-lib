@@ -63,7 +63,6 @@
         };
         var call = function(success, error) {
             params['token'] = $cookies.get('registrame-api-token');
-            console.log($cookies.get('registrame-api-token'));
             if (rgmeUtils.checkParams(requiredParameters, params)) {
                 rgmeRequest.get(protocol + url, params, success, error);
             } else {
