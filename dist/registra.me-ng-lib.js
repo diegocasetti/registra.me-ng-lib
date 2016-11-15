@@ -187,8 +187,20 @@
             var requiredParameters = ['token'];
             call(url, requiredParameters, success, error);
         };
+        var getCallsByAnexo = function(success, error){
+            var url = '/llamadas/por/anexo';
+            var requiredParameters = ['token'];
+            call(url, requiredParameters, success, error);
+        };
+        var getCallsByDay = function(success, error){
+            var url = '/llamadas/por/dia';
+            var requiredParameters = ['token'];
+            call(url, requiredParameters, success, error);
+        };
         return {
             getBytes: getBytes,
+            getCallsByAnexo: getCallsByAnexo,
+            getCallsByDay: getCallsByDay,
             setCentralTelefonicaID: setCentralTelefonicaID,
             setInsecureProtocol: setInsecureProtocol
         };
