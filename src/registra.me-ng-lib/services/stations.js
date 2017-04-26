@@ -1,14 +1,16 @@
 (function(angular) {
     angular.
     module('registra.meNgLib.services').
-    factory('rgmeUser', ['rgmeRequest', 'rgmeUtils', '$cookies', 'regmeApiBaseURL', '$q',
-        function(rgmeRequest, rgmeUtils, $cookies, regmeApiBaseURL, $q) {
-            var requiredParameters = ['token'];
+    factory('rgmeStation', ['$q', 'rgmeRequest', 'rgmeUtils', '$cookies', 'regmeApiBaseURL',
+        function($q, rgmeRequest, rgmeUtils, $cookies, regmeApiBaseURL) {
             var params = {};
+            var setCentralTelefonicaID = function(centralTelefonicaID) {
+                params['central_telefonica_id'] = centralTelefonicaID;
+            };
             var callGet = function(urlMethod, requiredParameters) {
                 var deferred = $q.defer();
                 params['token'] = $cookies.get('registrame-api-token');
-                if(rgmeUtils.checkParams(requiredParameters, params)) {
+                if (rgmeUtils.checkParams(requiredParameters, params)) {
                     rgmeRequest.get(regmeApiBaseURL + urlMethod, params).then(function(data) {
                         deferred.resolve(data);
                     }, function(err) {
@@ -23,10 +25,10 @@
                 params = {};
                 return deferred.promise;
             };
-            var getUser = function() {
+            var getStations = function() {
                 var deferred = $q.defer();
-                var url = 'user';
-                var requiredParameters = ['token'];
+                var url = 'estacion/operador/telefonico/obtener';
+                var requiredParameters = ['token', 'central_telefonica_id'];
                 callGet(url, requiredParameters).then(function(data) {
                     deferred.resolve(data);
                 }, function(err) {
@@ -35,7 +37,8 @@
                 return deferred.promise;
             };
             return {
-                getUser: getUser
+                getStations: getStations,
+                setCentralTelefonicaID: setCentralTelefonicaID
             };
         }
     ]);

@@ -1,8 +1,8 @@
 (function(angular) {
     angular.
     module('registra.meNgLib.services').
-    factory('rgmeAudioCall', ['rgmeRequest', 'rgmeUtils', '$cookies', 'regmeApiBaseURL',
-        function(rgmeRequest, rgmeUtils, $cookies, regmeApiBaseURL) {
+    factory('rgmeAudioCall', ['$q', 'rgmeRequest', 'rgmeUtils', '$cookies', 'regmeApiBaseURL',
+        function($q, rgmeRequest, rgmeUtils, $cookies, regmeApiBaseURL) {
             var url = regmeApiBaseURL + 'obtener/llamada/audio';
             var requiredParameters = ['token', 'central_telefonica_id'];
             var requiredParametersToFileUrl = ['token', 'central_telefonica_id', 'llamada_audio_id'];
@@ -29,28 +29,40 @@
             var setLlamadaAudioID = function(llamadaAudioID) {
                 params['llamada_audio_id'] = llamadaAudioID;
             };
-            var call = function(success, error) {
+            var call = function() {
+                var deferred = $q.defer();
                 params['token'] = $cookies.get('registrame-api-token');
                 if (rgmeUtils.checkParams(requiredParameters, params)) {
-                    rgmeRequest.get(url, params, success, error);
+                    rgmeRequest.get(url, params).then(function(data) {
+                        deferred.resolve(data);
+                    }, function(err) {
+                        deferred.reject(err);
+                    });
                 } else {
                     error({
                         status: 'error',
                         message: 'Parametros obligatorios faltantes.'
                     });
                 }
+                return deferred.promise;
             };
-            var getUrlToFile = function(success, error) {
+            var getUrlToFile = function() {
+                var deferred = $q.defer();
                 params['token'] = $cookies.get('registrame-api-token');
                 if (rgmeUtils.checkParams(requiredParametersToFileUrl, params)) {
-                    rgmeRequest.buildUrl(urlToFile, params, success);
+                    rgmeRequest.buildUrl(urlToFile, params).then(function(data) {
+                        deferred.resolve(data);
+                    }, function(err) {
+                        deferred.reject(err);
+                    });
                 } else {
-                    error({
+                    deferred.reject({
                         status: 'error',
                         message: 'Parametros obligatorios faltantes.'
                     });
                 }
                 delete params['llamada_audio_id'];
+                return deferred.promise;
             };
             return {
                 call: call,

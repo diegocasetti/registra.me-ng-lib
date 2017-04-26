@@ -1,8 +1,8 @@
 (function(angular) {
     angular.
     module('registra.meNgLib.services').
-    factory('rgmeCall', ['rgmeRequest', 'rgmeUtils', '$cookies', 'regmeApiBaseURL',
-        function(rgmeRequest, rgmeUtils, $cookies, regmeApiBaseURL) {
+    factory('rgmeCall', ['$q', 'rgmeRequest', 'rgmeUtils', '$cookies', 'regmeApiBaseURL',
+        function($q, rgmeRequest, rgmeUtils, $cookies, regmeApiBaseURL) {
             var url = regmeApiBaseURL + 'obtener/llamada';
             var requiredParameters = ['token', 'central_telefonica_id'];
             var params = {};
@@ -27,17 +27,23 @@
             var setLlamadaID = function(llamadaID) {
                 params['llamada_id'] = llamadaID;
             };
-            var call = function(success, error) {
+            var call = function() {
+                var deferred = $q.defer();
                 params['token'] = $cookies.get('registrame-api-token');
                 if (rgmeUtils.checkParams(requiredParameters, params)) {
-                    rgmeRequest.get(url, params, success, error);
+                    rgmeRequest.get(url, params).then(function(data) {
+                        deferred.resolve(data);
+                    }, function(err) {
+                        deferred.reject(err);
+                    });
                 } else {
-                    error({
+                    deferred.reject({
                         status: 'error',
                         message: 'Parametros obligatorios faltantes.'
                     });
                 }
                 params = {};
+                return deferred.promise;
             };
             return {
                 call: call,
