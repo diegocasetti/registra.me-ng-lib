@@ -10,5 +10,5 @@
     angular.module('registra.meNgLib.directives', []);
     angular.module('registra.meNgLib.filters', []);
     angular.module('registra.meNgLib.services', []).value('regmeApiBaseURL', 'https://api.registra.me/api-v1/client/');
-    angular.module('registra.meNgLib', ['registra.meNgLib.config', 'registra.meNgLib.directives', 'registra.meNgLib.filters', 'registra.meNgLib.services', 'ngResource', 'ngCookies', 'ngSanitize']);
+    angular.module('registra.meNgLib', ['registra.meNgLib.config', 'registra.meNgLib.filters', 'registra.meNgLib.services', 'ngResource', 'ngCookies', 'ngSanitize']);
 })(angular);

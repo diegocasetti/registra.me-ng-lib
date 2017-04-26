@@ -10,11 +10,11 @@
     angular.module('registra.meNgLib.directives', []);
     angular.module('registra.meNgLib.filters', []);
     angular.module('registra.meNgLib.services', []).value('regmeApiBaseURL', 'https://api.registra.me/api-v1/client/');
-    angular.module('registra.meNgLib', ['registra.meNgLib.config', 'registra.meNgLib.directives', 'registra.meNgLib.filters', 'registra.meNgLib.services', 'ngResource', 'ngCookies', 'ngSanitize']);
+    angular.module('registra.meNgLib', ['registra.meNgLib.config', 'registra.meNgLib.filters', 'registra.meNgLib.services', 'ngResource', 'ngCookies', 'ngSanitize']);
 })(angular);
-var scripts = document.getElementsByTagName("script")
-var currentScriptPath = scripts[scripts.length - 1].src;
-console.log(currentScriptPath.replace('options.js', 'options.html'));
+// var scripts = document.getElementsByTagName("script")
+// var currentScriptPath = scripts[scripts.length - 1].src;
+// console.log(currentScriptPath.replace('options.js', 'options.html'));
 (function(angular) {
     angular.
     module('registra.meNgLib.directives').config(function($sceDelegateProvider) {
