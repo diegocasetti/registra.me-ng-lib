@@ -57,7 +57,7 @@
             return deferred.promise;
         };
         var validateSessionError = function(data) {
-            if (angular.isDefined(data.type)) {
+            if (data && angular.isDefined(data.type)) {
                 if (data.type == 'session') {
                     if (sessionErrorFunct != null) {
                         sessionErrorFunct();

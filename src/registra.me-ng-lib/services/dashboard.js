@@ -59,10 +59,22 @@
                 });
                 return deferred.promise;
             };
+            var getCallsByGroupDay = function() {
+                var deferred = $q.defer();
+                var url = '/llamadas/por/grupo/dia';
+                var requiredParameters = ['token'];
+                call(url, requiredParameters).then(function(data) {
+                    deferred.resolve(data);
+                }, function(err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            };
             return {
                 getBytes: getBytes,
                 getCallsByAnexo: getCallsByAnexo,
                 getCallsByDay: getCallsByDay,
+                getCallsByGroupDay: getCallsByGroupDay,
                 setCentralTelefonicaID: setCentralTelefonicaID
             };
         }

@@ -3,8 +3,6 @@
     module('registra.meNgLib.services').
     factory('rgmeCall', ['$q', 'rgmeRequest', 'rgmeUtils', '$cookies', 'regmeApiBaseURL',
         function($q, rgmeRequest, rgmeUtils, $cookies, regmeApiBaseURL) {
-            var url = regmeApiBaseURL + 'obtener/llamada';
-            var requiredParameters = ['token', 'central_telefonica_id'];
             var params = {};
             var setCentralTelefonicaID = function(centralTelefonicaID) {
                 params['central_telefonica_id'] = centralTelefonicaID;
@@ -27,11 +25,17 @@
             var setLlamadaID = function(llamadaID) {
                 params['llamada_id'] = llamadaID;
             };
-            var call = function() {
+            var setAnexoID = function(anexoID) {
+                params['anexo_id'] = anexoID;
+            };
+            var setTipoLlamadaID = function(tipoLlamadaID) {
+                params['tipo_llamada_id'] = tipoLlamadaID;
+            };
+            var callGet = function(urlMethod, requiredParameters) {
                 var deferred = $q.defer();
                 params['token'] = $cookies.get('registrame-api-token');
                 if (rgmeUtils.checkParams(requiredParameters, params)) {
-                    rgmeRequest.get(url, params).then(function(data) {
+                    rgmeRequest.get(regmeApiBaseURL + urlMethod, params).then(function(data) {
                         deferred.resolve(data);
                     }, function(err) {
                         deferred.reject(err);
@@ -45,15 +49,52 @@
                 params = {};
                 return deferred.promise;
             };
+            var getCalls = function() {
+                var deferred = $q.defer();
+                var url = 'obtener/llamada';
+                var requiredParameters = ['token', 'central_telefonica_id'];
+                callGet(url, requiredParameters).then(function(data) {
+                    deferred.resolve(data);
+                }, function(err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            };
+            var getCallType = function() {
+                var deferred = $q.defer();
+                var url = 'obtener/llamada/tipo';
+                var requiredParameters = ['token'];
+                callGet(url, requiredParameters).then(function(data) {
+                    deferred.resolve(data);
+                }, function(err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            };
+            var downloadExcel = function() {
+                var deferred = $q.defer();
+                var url = 'reporte/mensual/excel';
+                var requiredParameters = ['token', 'central_telefonica_id'];
+                callGet(url, requiredParameters).then(function(data) {
+                    deferred.resolve(data);
+                }, function(err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            };
             return {
-                call: call,
+                getCalls: getCalls,
+                downloadExcel: downloadExcel,
+                getCallType: getCallType,
                 setCentralTelefonicaID: setCentralTelefonicaID,
                 setTelefono: setTelefono,
                 setFechaInicio: setFechaInicio,
                 setFechaFin: setFechaFin,
                 setOrder: setOrder,
                 setPage: setPage,
-                setLlamadaID: setLlamadaID
+                setLlamadaID: setLlamadaID,
+                setAnexoID: setAnexoID,
+                setTipoLlamadaID: setTipoLlamadaID
             };
         }
     ]);
