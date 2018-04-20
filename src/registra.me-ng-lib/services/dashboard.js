@@ -70,12 +70,24 @@
                 });
                 return deferred.promise;
             };
+            var getResponsesAvgByGroupDay = function() {
+                var deferred = $q.defer();
+                var url = '/tiempo-respuesta/por/grupo/dia';
+                var requiredParameters = ['token'];
+                call(url, requiredParameters).then(function(data) {
+                    deferred.resolve(data);
+                }, function(err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            };
             return {
                 getBytes: getBytes,
                 getCallsByAnexo: getCallsByAnexo,
                 getCallsByDay: getCallsByDay,
                 getCallsByGroupDay: getCallsByGroupDay,
-                setCentralTelefonicaID: setCentralTelefonicaID
+                setCentralTelefonicaID: setCentralTelefonicaID,
+                getResponsesAvgByGroupDay: getResponsesAvgByGroupDay
             };
         }
     ]);

@@ -9,9 +9,10 @@
     // Modules
     angular.module('registra.meNgLib.directives', []);
     angular.module('registra.meNgLib.filters', []);
-    angular.module('registra.meNgLib.services', []).value('regmeApiBaseURL', 'https://api.registra.me/api-v1/client/');
+    angular.module('registra.meNgLib.services', []).value('regmeApiBaseURL', 'https://centel.fireless.cl/api-v1/client/');
     angular.module('registra.meNgLib', ['registra.meNgLib.config', 'registra.meNgLib.filters', 'registra.meNgLib.services', 'ngResource', 'ngCookies', 'ngSanitize']);
 })(angular);
+
 // var scripts = document.getElementsByTagName("script")
 // var currentScriptPath = scripts[scripts.length - 1].src;
 // console.log(currentScriptPath.replace('options.js', 'options.html'));
@@ -442,12 +443,24 @@
                 });
                 return deferred.promise;
             };
+            var getResponsesAvgByGroupDay = function() {
+                var deferred = $q.defer();
+                var url = '/tiempo-respuesta/por/grupo/dia';
+                var requiredParameters = ['token'];
+                call(url, requiredParameters).then(function(data) {
+                    deferred.resolve(data);
+                }, function(err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            };
             return {
                 getBytes: getBytes,
                 getCallsByAnexo: getCallsByAnexo,
                 getCallsByDay: getCallsByDay,
                 getCallsByGroupDay: getCallsByGroupDay,
-                setCentralTelefonicaID: setCentralTelefonicaID
+                setCentralTelefonicaID: setCentralTelefonicaID,
+                getResponsesAvgByGroupDay: getResponsesAvgByGroupDay
             };
         }
     ]);
