@@ -82,6 +82,17 @@
                 });
                 return deferred.promise;
             };
+            var getLastCall = function() {
+              var deferred = $q.defer();
+              var url = 'obtener/llamada/ultima';
+              var requiredParameters = ['token', 'central_telefonica_id'];
+              callGet(url, requiredParameters).then(function(data) {
+                deferred.resolve(data);
+              }, function(err) {
+                deferred.reject(err);
+              });
+              return deferred.promise;
+            };
             return {
                 getCalls: getCalls,
                 downloadExcel: downloadExcel,
@@ -94,7 +105,8 @@
                 setPage: setPage,
                 setLlamadaID: setLlamadaID,
                 setAnexoID: setAnexoID,
-                setTipoLlamadaID: setTipoLlamadaID
+                setTipoLlamadaID: setTipoLlamadaID,
+                getLastCall: getLastCall
             };
         }
     ]);

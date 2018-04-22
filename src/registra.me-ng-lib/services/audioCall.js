@@ -7,6 +7,8 @@
             var requiredParameters = ['token', 'central_telefonica_id'];
             var requiredParametersToFileUrl = ['token', 'central_telefonica_id', 'llamada_audio_id'];
             var urlToFile = regmeApiBaseURL + 'descargar/llamada/audio';
+            var requiredParametersLastAudioCall = ['token', 'central_telefonica_id'];
+            var urlLastAudioCall = regmeApiBaseURL + 'obtener/llamada/audio/ultima';
             var params = {};
             var setToken = function(token) {
                 params['token'] = token;
@@ -64,6 +66,24 @@
                 delete params['llamada_audio_id'];
                 return deferred.promise;
             };
+            var getLastAudioCall = function() {
+              var deferred = $q.defer();
+              params['token'] = $cookies.get('registrame-api-token');
+              if (rgmeUtils.checkParams(requiredParametersLastAudioCall, params)) {
+                console.log(urlLastAudioCall);
+                rgmeRequest.get(urlLastAudioCall, params).then(function(data) {
+                  deferred.resolve(data);
+                }, function(err) {
+                  deferred.reject(err);
+                });
+              } else {
+                deferred.reject({
+                  status: 'error',
+                  message: 'Parametros obligatorios faltantes.'
+                });
+              }
+              return deferred.promise;
+            };
             return {
                 call: call,
                 setCentralTelefonicaID: setCentralTelefonicaID,
@@ -72,7 +92,8 @@
                 setOrder: setOrder,
                 setPage: setPage,
                 setLlamadaAudioID: setLlamadaAudioID,
-                getUrlToFile: getUrlToFile
+                getUrlToFile: getUrlToFile,
+                getLastAudioCall: getLastAudioCall
             };
         }
     ]);
